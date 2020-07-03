@@ -29,34 +29,47 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page'),
-      ),
-      body: Query(
-        options: QueryOptions(documentNode: gql(getAlbums)),
-        builder: (QueryResult result, {fetchMore, refetch}) {
-          if (result.hasException) {
-            return Text(result.exception.toString());
-          }
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            tooltip: 'Atrás',
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text('Lista de títulos'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              tooltip: 'Search',
+              onPressed: null,
+            ),
+          ],
+        ),
+        body: new Container(
+            child: Query(
+                options: QueryOptions(documentNode: gql(getAlbums)),
+                builder: (QueryResult result, {fetchMore, refetch}) {
+                  if (result.hasException) {
+                    return Text(result.exception.toString());
+                  }
 
-          if (result.loading) {
-            return Center(child: CircularProgressIndicator());
-          }
+                  if (result.loading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-          List albums = result.data["albums"]["data"];
-          //print(albums);
+                  List albums = result.data["albums"]["data"];
+                  //print(albums);
 
-          return ListView.builder(
-              itemCount: albums.length,
-              itemBuilder: (context, index) {
-                final album = albums[index]['title'];
-
-                return ListTile(
-                  title: Text(album),
-                );
-              });
-        },
-      ),
-    );
+                  return Container(
+                      child: ListView.builder(
+                          itemCount: albums.length,
+                          itemBuilder: (context, index) {
+                            final album = albums[index]['title'];
+                            return ListTile(
+                              title: Text(album),
+                            );
+                          }));
+                })));
   }
 }
