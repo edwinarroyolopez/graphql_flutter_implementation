@@ -5,25 +5,16 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
-  final String getAlbums = """
-    query getAlbums{
-      albums(options:{
-        paginate: {
-          page: 1,
-          limit: 7
-        }
-      }){
-        data{
-          id
-          title
-          user {
-            name
-            username
-            email
-          }
-        }
+  final String getProperties = """
+  query getProperties {
+      properties: getPropertiesFromFincaRaiz{
+        title_description
+        price
+        area
+        bedrooms
+        images
       }
-    }
+  }
   """;
 
   @override
@@ -37,7 +28,7 @@ class HomePage extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          title: Text('Lista de títulos'),
+          title: Text('Lista de propiedades'),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search),
@@ -48,7 +39,7 @@ class HomePage extends StatelessWidget {
         ),
         body: new Container(
             child: Query(
-                options: QueryOptions(documentNode: gql(getAlbums)),
+                options: QueryOptions(documentNode: gql(getProperties)),
                 builder: (QueryResult result, {fetchMore, refetch}) {
                   if (result.hasException) {
                     return Text(result.exception.toString());
@@ -58,18 +49,51 @@ class HomePage extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   }
 
-                  List albums = result.data["albums"]["data"];
-                  //print(albums);
+                  List properties = result.data["properties"];
+                  print(properties);
 
                   return Container(
                       child: ListView.builder(
-                          itemCount: albums.length,
+                          itemCount: properties.length,
                           itemBuilder: (context, index) {
-                            final album = albums[index]['title'];
+                            final price = properties[index]['price'];
+                            final bedrooms = properties[index]['bedrooms'];
+                            final img =
+                                properties[index]['images']['images'][0]['url'];
                             return ListTile(
-                              title: Text(album),
+                              title: cardProperty(price, bedrooms, img),
                             );
                           }));
                 })));
   }
+}
+
+Widget cardProperty(price, bedrooms, img) {
+  return Row(
+    children: <Widget>[
+      Align(
+          alignment: Alignment.topRight,
+          child: RichText(
+            text: TextSpan(
+              text: 'Hab. ' + bedrooms + ' - ',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                  fontSize: 15),
+              children: <TextSpan>[
+                TextSpan(
+                    text: price,
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold)),
+              ],
+            ),
+          )),
+      SizedBox(
+        height: 5,
+      ),
+      Image.network(img, width: 150, height: 150, fit: BoxFit.fill)
+    ],
+  );
 }
