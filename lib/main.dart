@@ -1,3 +1,4 @@
+import 'package:apirestflutter/pages/carousel.dart';
 import 'package:apirestflutter/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -43,7 +44,7 @@ class FirstRoute extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-            height: 220,
+            height: 520,
             width: double.maxFinite,
             child: Card(
               elevation: 5,
@@ -60,20 +61,25 @@ class FirstRoute extends StatelessWidget {
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
-                                    cryptoIcon(),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    cryptoNameSymbol(),
+                                    p2(),
                                     Spacer(),
-                                    cryptoChange(),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    changeIcon(),
-                                    SizedBox(
-                                      width: 20,
-                                    )
+                                    //p3(),
+                                    //  p1(),
+                                    // Spacer(),
+                                    // cryptoIcon(),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    // cryptoNameSymbol(),
+                                    // Spacer(),
+                                    // cryptoChange(),
+                                    // SizedBox(
+                                    //   width: 10,
+                                    // ),
+                                    // changeIcon(),
+                                    // SizedBox(
+                                    //   width: 20,
+                                    // )
                                   ],
                                 ),
                                 Row(
@@ -105,7 +111,7 @@ class FirstRoute extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Libros'),
+              title: Text('Propiedades'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -114,12 +120,12 @@ class FirstRoute extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Propiedades'),
+              title: Text('Carousel'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CarouselPage()),
+                );
               },
             ),
           ],
@@ -146,6 +152,38 @@ class SecondRoute extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget p2() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      SizedBox(
+        width: 350,
+        child: Text(
+          "BBAwesome somthing very long text which should ideally soft warp lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorm ipsum",
+          maxLines: 4,
+          overflow: TextOverflow.fade,
+          softWrap: true,
+          style: TextStyle(color: Colors.grey, fontSize: 16.0),
+        ),
+      )
+    ],
+  );
+}
+
+Widget p4() {
+  return SizedBox(
+    width: 120.0,
+    child: Text(
+      "\nEnter Long Text",
+      maxLines: 1,
+      overflow: TextOverflow.visible,
+      softWrap: false,
+      style: TextStyle(
+          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20.0),
+    ),
+  );
 }
 
 //Widgets
